@@ -20,9 +20,10 @@ from numpy import *
 
 def classify0(inX, dataSet, labelB, k):
     dataSetSize = dataSet.shape[0]
-    print(inX)
-    print(tile(inX, (dataSetSize, 1)))
-    # diffMat = tile(inX, (dataSetSize, 1)) - dataSet
+    diffMat = tile(inX, (dataSetSize, 1)) - dataSet
+    sqDiffMat = diffMat ** 2
+    sqDistances = sqDiffMat.sum(axis=1)
+    print(sqDistances)
 
 
 if __name__ == '__main__':

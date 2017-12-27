@@ -23,9 +23,14 @@ def func():
     # tile 对矩阵进行重复，tile(inx, (m,n)) 表示对矩阵inx y方向重复m次，x方向重复n次
     inx = [0, 1]
     redata = tile(inx, (4, 2))
-
     print(redata)
+
+    # sum 没有axis参数表示全部相加，axis＝0 表示按列相加，axis＝1 表示按照行的方向
+    a = sum([[0, 1, 2], [2, 1, 3]], axis=1)
+    print(a)
 
 
 if __name__ == '__main__':
-    func()
+    # func()
+    print(2 ** 2)
+    print(8 ** 0.5)
