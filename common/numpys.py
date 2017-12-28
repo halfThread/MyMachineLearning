@@ -29,8 +29,11 @@ def func():
     a = sum([[0, 1, 2], [2, 1, 3]], axis=1)
     print(a)
 
+    # argsort() 返回数组从小到大排序的索引值
+    # 获取字典里的值的时候，一个是通过键值对，即dict['key'], 另一个就是dict.get()方法
+    # items方法是可以将字典中的所有项，以列表方式返回。
+    # iteritems方法与items方法相比作用大致相同，只是它的返回值不是列表，而是一个迭代器。
+
 
 if __name__ == '__main__':
-    # func()
-    print(2 ** 2)
-    print(8 ** 0.5)
+    func()
