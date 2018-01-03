@@ -12,6 +12,7 @@
 @time: 2017/12/27 16:25
 """
 from numpy import *
+import operator
 
 
 def func():
@@ -35,5 +36,25 @@ def func():
     # iteritems方法与items方法相比作用大致相同，只是它的返回值不是列表，而是一个迭代器。
 
 
+def testFunc():
+    dataSet = [[1, 1, 'yes'], [1, 1, 'yes'], [1, 0, 'no'], [0, 1, 'no'], [0, 1, 'no']]
+    # numFeatures = len(dataSet[0]) - 1
+    # print(numFeatures)
+    # featList = [example[2] for example in dataSet]
+    # print(featList)
+
+    # sorted(iterable, cmp=None, key=None, reverse=False)
+    # iterable：是可迭代类型;
+    # cmp：用于比较的函数，比较什么由key决定, 有默认值，迭代集合中的一项;
+    # key：用列表元素的某个属性和函数进行作为关键字，有默认值，迭代集合中的一项;
+    # reverse：排序规则.reverse = True 或者 reverse = False，有默认值。
+    # 返回值：是一个经过排序的可迭代类型，与iterable一样。
+    # operator模块提供的itemgetter函数用于获取对象的哪些维的数据，参数为一些序号
+    # operator.itemgetter函数获取的不是值，而是定义了一个函数，通过该函数作用到对象上才能获取值
+    sortedData = sorted(dataSet, key=operator.itemgetter(1), reverse=True)
+    print(sortedData)
+
+
 if __name__ == '__main__':
-    func()
+    testFunc()
+    # func()

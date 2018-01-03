@@ -13,6 +13,7 @@
 """
 
 from math import log
+import operator
 
 
 # 计算给定数据集的熵
@@ -43,12 +44,72 @@ def splitDataSet(dataSet, axis, value):
     return retDataSet
 
 
+def chooseBestFeatureToSplit(dataSet):
+    numFeatures = len(dataSet[0]) - 1
+    baseEntropy = calcShannonEnt(dataSet)
+    bestInfoGain = 0.0
+    bestFeature = -1
+    for i in range(numFeatures):
+        featList = [example[i] for example in dataSet]
+        uniqueVals = set(featList)
+        newEntropy = 0.0
+        # 计算每种特征划分数据集时的信息熵
+        for value in uniqueVals:
+            subDataSet = splitDataSet(dataSet, i, value)
+            # 计算按照该特征划分数据集时，符合该特征的数据集的概率
+            prob = len(subDataSet) / float(len(dataSet))
+            newEntropy += prob * calcShannonEnt(subDataSet)
+        infoGain = baseEntropy - newEntropy  # 信息增益
+        if infoGain > bestInfoGain:
+            bestInfoGain = infoGain
+            bestFeature = i
+    return bestFeature
+
+
+# 选取出现次数最多的分类名称
+def majorityCnt(classList):
+    classCount = {}
+    for vote in classList:
+        if vote not in classCount.keys():
+            classCount[vote] = 0
+        else:
+            classCount[vote] += 1
+        sortedClassCount = sorted(classCount.iteritems(), key=operator.itemgetter[1], reverse=True)
+        return sortedClassCount[0][0]
+
+
+def createTree(dataSet, labels):
+    classList = [example[-1] for example in dataSet]  # dataSet的最后一列为标签列
+    if classList.count(classList[0]) == len(classList):  # 如果类别相同，则停止继续划分
+        return classList[0]
+    if len(dataSet[0]) == 1:  # 如果遍历完所有特征，类别依然有不一样的，则选取类别次数出现最多的类别
+        return majorityCnt(classList)
+
+    bestFeat = chooseBestFeatureToSplit(dataSet)  # 选取最好的特征划分数据集的属性
+    bestFeatLabel = labels[bestFeat]
+
+    myTree = {bestFeatLabel: {}}
+    del (labels[bestFeat])
+    featValues = [example[bestFeat] for example in dataSet]
+    uniqueVals = set(featValues)
+    for value in uniqueVals:
+        subLabels = labels[:]
+        myTree[bestFeatLabel][value] = createTree(splitDataSet(dataSet, bestFeat, value), subLabels)
+    return myTree
+
+
 if __name__ == '__main__':
     fishDataSet = [[1, 1, 'yes'], [1, 1, 'yes'], [1, 0, 'no'], [0, 1, 'no'], [0, 1, 'no']]
     labels = ['no surfacing', 'flippers']
     # shannonEnt = calcShannonEnt(fishDataSet)
     # print(shannonEnt)
 
-    result1 = splitDataSet(fishDataSet, 0, 1)
-    result1 = splitDataSet(fishDataSet, 0, 0)
-    print(result1)
+    # result1 = splitDataSet(fishDataSet, 0, 1)
+    # result1 = splitDataSet(fishDataSet, 0, 0)
+    # print(result1)
+
+    # bestFeature = chooseBestFeatureToSplit(fishDataSet)
+    # print("最好的数据集划分是第[%d]个特征进行划分" % bestFeature)
+
+    mytree = createTree(fishDataSet, labels)
+    print(mytree)
