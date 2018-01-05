@@ -2,11 +2,8 @@
 # -*- coding:utf8 -*-
 
 """
-@version: 
 @author: lh
-@license: Apache Licence 
 @contact: liuhuan0672@gmail.com
-@site: 
 @software: PyCharm
 @file: treePlotter.py
 @time: 2018/1/3 16:29
@@ -67,7 +64,7 @@ if __name__ == '__main__':
     listOfTrees = [{'nosurfacing': {0: 'no', 1: {'flippers': {0: 'no', 1: 'yes'}}}},
                    {'nosurfacing': {0: 'no', 1: {'flippers': {0: {'head': {0: 'no', 1: 'yes'}}, 1: 'no'}}}}]
 
-    numLeaf = getNumLeafs(listOfTrees[1])
-    dept = getTreeDept(listOfTrees[1])
+    numLeaf = getNumLeafs(listOfTrees[0])
+    dept = getTreeDept(listOfTrees[0])
     print(numLeaf)
     print(dept)
