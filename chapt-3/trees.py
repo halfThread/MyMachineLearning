@@ -98,6 +98,32 @@ def createTree(dataSet, labels):
     return myTree
 
 
+def classify(inputTree, featLabels, testVec):
+    firstStr = list(inputTree.keys())[0]
+    secondDict = inputTree[firstStr]
+    featIndex = featLabels.index(firstStr)
+    for key in secondDict.keys():
+        if testVec[featIndex] == key:
+            if type(secondDict[key]).__name__ == 'dict':
+                classLabel = classify(secondDict[key], featLabels, testVec)
+            else:
+                classLabel = secondDict[key]
+    return classLabel
+
+
+def storeTree(inputTree, filename):
+    import pickle
+    fw = open(filename, 'wb')
+    pickle.dump(inputTree, fw)
+    fw.close()
+
+
+def grabTree(filename):
+    import pickle
+    fr = open(filename,'rb')
+    return pickle.load(fr)
+
+
 if __name__ == '__main__':
     fishDataSet = [[1, 1, 'yes'], [1, 1, 'yes'], [1, 0, 'no'], [0, 1, 'no'], [0, 1, 'no']]
     labels = ['no surfacing', 'flippers']
@@ -111,5 +137,10 @@ if __name__ == '__main__':
     # bestFeature = chooseBestFeatureToSplit(fishDataSet)
     # print("最好的数据集划分是第[%d]个特征进行划分" % bestFeature)
 
-    mytree = createTree(fishDataSet, labels)
-    print(mytree)
+    mytree = createTree(fishDataSet, labels[:])
+
+    storeTree(mytree, 'classifierStorage.txt')
+    mytreeAgain = grabTree('classifierStorage.txt')
+    print(mytreeAgain)
+    classLabel = classify(mytree, labels, [1, 1])
+    print(classLabel)
